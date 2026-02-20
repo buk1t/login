@@ -1,66 +1,82 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+export default function Page({ searchParams }) {
+  const returnTo =
+    (searchParams && searchParams.return_to) || "https://www.buk1t.com/";
 
-export default function Home() {
+  const startUrl =
+    "https://api.buk1t.com/api/auth/github/start?return_to=" +
+    encodeURIComponent(returnTo);
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main style={styles.main}>
+      <div style={styles.card}>
+        <div style={styles.brand}>buk1t</div>
+        <h1 style={styles.h1}>Sign in</h1>
+        <p style={styles.p}>
+          Use GitHub to sign in. This lets you sync themes now — and later, secure
+          personal stuff (like docs/editors).
+        </p>
+
+        <a href={startUrl} style={styles.btn}>
+          Continue with GitHub
+        </a>
+
+        <p style={styles.small}>
+          You’ll be redirected back to: <br />
+          <span style={styles.mono}>{returnTo}</span>
+        </p>
+      </div>
+    </main>
   );
 }
+
+const styles = {
+  main: {
+    minHeight: "100vh",
+    display: "grid",
+    placeItems: "center",
+    padding: 24,
+    background:
+      "radial-gradient(900px 500px at 20% 0%, rgba(80,150,255,0.18), transparent 55%)," +
+      "radial-gradient(900px 500px at 80% 20%, rgba(0,255,200,0.12), transparent 55%)," +
+      "#0b0b0d",
+    color: "rgba(255,255,255,0.92)",
+    fontFamily:
+      'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial',
+  },
+  card: {
+    width: "min(520px, 100%)",
+    borderRadius: 18,
+    padding: 22,
+    background: "rgba(18,18,22,0.72)",
+    border: "1px solid rgba(255,255,255,0.10)",
+    boxShadow: "0 14px 40px rgba(0,0,0,0.35)",
+  },
+  brand: {
+    fontWeight: 700,
+    letterSpacing: 0.6,
+    opacity: 0.9,
+    marginBottom: 10,
+  },
+  h1: { margin: "6px 0 8px", fontSize: 28, lineHeight: 1.1 },
+  p: { margin: "0 0 16px", opacity: 0.75, lineHeight: 1.45 },
+  btn: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+    width: "100%",
+    padding: "12px 14px",
+    borderRadius: 14,
+    background: "rgba(255,255,255,0.10)",
+    border: "1px solid rgba(255,255,255,0.16)",
+    color: "rgba(255,255,255,0.92)",
+    textDecoration: "none",
+    fontWeight: 650,
+  },
+  small: { marginTop: 14, opacity: 0.65, fontSize: 12, lineHeight: 1.35 },
+  mono: {
+    fontFamily:
+      "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, monospace",
+    opacity: 0.9,
+  },
+};
