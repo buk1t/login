@@ -1,16 +1,37 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import Header from "../_components/Header";
 import { ui } from "../_components/ui";
 
 export default function Settings() {
+  const router = useRouter();
+
   const [me, setMe] = useState(null);
-  const [theme, setTheme] = useState({ mode: "dark", accent: "ocean", radius: 18 });
+  const [theme, setTheme] = useState({
+    mode: "dark",
+    accent: "ocean",
+    radius: 18,
+  });
   const [status, setStatus] = useState("");
 
+  // If you want settings to send people back to the main buk1t site after login,
+  // set this to your preferred default:
+  const returnTo = "https://www.buk1t.com/";
+
+  const startUrl = useMemo(() => {
+    return (
+      "https://api.buk1t.com/api/auth/github/start?return_to=" +
+      encodeURIComponent(returnTo)
+    );
+  }, [returnTo]);
+
   useEffect(() => {
-    fetch("https://api.buk1t.com/api/me", { credentials: "include" })
+    fetch("https://api.buk1t.com/api/me", {
+      credentials: "include",
+      cache: "no-store",
+    })
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
         setMe(data);
@@ -25,9 +46,11 @@ export default function Settings() {
       const r = await fetch("https://api.buk1t.com/api/preferences", {
         method: "PATCH",
         credentials: "include",
+        cache: "no-store",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ theme }),
       });
+
       if (r.ok) setStatus("Saved ✅");
       else setStatus("Save failed ❌");
     } catch {
@@ -44,17 +67,43 @@ export default function Settings() {
         <h1 style={ui.h1}>Settings</h1>
 
         {!me?.ok ? (
-          <p style={ui.p}>
-            You aren’t logged in. Go back and sign in.
-          </p>
+          <>
+            <p style={ui.p}>You aren’t logged in.</p>
+
+            <a href={startUrl} style={ui.btn}>
+              Sign in with GitHub
+            </a>
+
+            <button
+              onClick={() => router.push("/")}
+              style={{ ...ui.btn, marginTop: 10 }}
+            >
+              Back
+            </button>
+          </>
         ) : (
           <>
-            <div style={{ display: "grid", gap: 12, gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))" }}>
-              <label style={{ display: "grid", gap: 6, fontWeight: 700, opacity: 0.9 }}>
+            <div
+              style={{
+                display: "grid",
+                gap: 12,
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              }}
+            >
+              <label
+                style={{
+                  display: "grid",
+                  gap: 6,
+                  fontWeight: 700,
+                  opacity: 0.9,
+                }}
+              >
                 Mode
                 <select
                   value={theme.mode || "dark"}
-                  onChange={(e) => setTheme({ ...theme, mode: e.target.value })}
+                  onChange={(e) =>
+                    setTheme({ ...theme, mode: e.target.value })
+                  }
                   style={ui.input}
                 >
                   <option value="dark">dark</option>
@@ -62,22 +111,40 @@ export default function Settings() {
                 </select>
               </label>
 
-              <label style={{ display: "grid", gap: 6, fontWeight: 700, opacity: 0.9 }}>
+              <label
+                style={{
+                  display: "grid",
+                  gap: 6,
+                  fontWeight: 700,
+                  opacity: 0.9,
+                }}
+              >
                 Accent
                 <input
                   value={theme.accent || ""}
-                  onChange={(e) => setTheme({ ...theme, accent: e.target.value })}
+                  onChange={(e) =>
+                    setTheme({ ...theme, accent: e.target.value })
+                  }
                   style={ui.input}
                   placeholder="ocean / neon / beach / etc"
                 />
               </label>
 
-              <label style={{ display: "grid", gap: 6, fontWeight: 700, opacity: 0.9 }}>
+              <label
+                style={{
+                  display: "grid",
+                  gap: 6,
+                  fontWeight: 700,
+                  opacity: 0.9,
+                }}
+              >
                 Radius
                 <input
                   type="number"
                   value={Number(theme.radius ?? 18)}
-                  onChange={(e) => setTheme({ ...theme, radius: Number(e.target.value) })}
+                  onChange={(e) =>
+                    setTheme({ ...theme, radius: Number(e.target.value) })
+                  }
                   style={ui.input}
                 />
               </label>
@@ -87,7 +154,9 @@ export default function Settings() {
               Save
             </button>
 
-            {!!status && <div style={{ marginTop: 10, opacity: 0.85 }}>{status}</div>}
+            {!!status && (
+              <div style={{ marginTop: 10, opacity: 0.85 }}>{status}</div>
+            )}
 
             <details style={{ marginTop: 14, opacity: 0.85 }}>
               <summary>Theme JSON</summary>

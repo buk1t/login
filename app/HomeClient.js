@@ -21,7 +21,10 @@ export default function HomeClient() {
   const [me, setMe] = useState(null);
 
   useEffect(() => {
-    fetch("https://api.buk1t.com/api/me", { credentials: "include" })
+    fetch("https://api.buk1t.com/api/me", {
+      credentials: "include",
+      cache: "no-store",
+    })
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
         setMe(data);
@@ -37,7 +40,8 @@ export default function HomeClient() {
 
         <h1 style={ui.h1}>Sign in</h1>
         <p style={ui.p}>
-          GitHub sign-in lets you sync themes now — and later, secure personal stuff (docs/editors).
+          GitHub sign-in lets you sync themes now — and later, secure personal
+          stuff (docs/editors).
         </p>
 
         <a href={startUrl} style={ui.btn}>
