@@ -1,17 +1,30 @@
 import Link from "next/link";
 import { ui } from "./ui";
 
-export default function Header({ me }) {
+export default function Header({ me, active }) {
   const loggedIn = !!me?.ok;
 
   return (
-    <div style={ui.bar}>
-      <Link href="/" style={ui.brand}>buk1t</Link>
+    <div style={ui.topbar}>
+      <Link href="/" style={ui.brand}>
+        <span>buk1t</span>
+        <span style={ui.pill}>login</span>
+      </Link>
 
       <div style={ui.right}>
-        <Link href="/settings" style={ui.link}>Settings</Link>
-        <Link href="/logout" style={ui.linkDanger}>Log out</Link>
-        {!loggedIn && <span style={{ opacity: 0.65, fontSize: 12 }}>Not signed in</span>}
+        {loggedIn && active !== "settings" && (
+          <Link href="/settings" style={ui.btnGhost}>
+            Settings
+          </Link>
+        )}
+
+        {loggedIn ? (
+          <Link href="/logout" style={ui.btnDanger}>
+            Log out
+          </Link>
+        ) : (
+          <span style={{ opacity: 0.62, fontSize: 12 }}>Not signed in</span>
+        )}
       </div>
     </div>
   );

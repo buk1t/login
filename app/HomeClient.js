@@ -10,7 +10,6 @@ export default function HomeClient() {
   const router = useRouter();
 
   const returnTo = sp.get("return_to") || "https://www.buk1t.com/";
-
   const startUrl = useMemo(() => {
     return (
       "https://api.buk1t.com/api/auth/github/start?return_to=" +
@@ -28,7 +27,7 @@ export default function HomeClient() {
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
         setMe(data);
-        if (data?.ok) router.replace("/settings"); // auto redirect
+        if (data?.ok) router.replace("/settings");
       })
       .catch(() => setMe(null));
   }, [router]);
@@ -36,12 +35,12 @@ export default function HomeClient() {
   return (
     <main style={ui.main}>
       <div style={ui.card}>
-        <Header me={me} />
+        <Header me={me} active="home" />
 
         <h1 style={ui.h1}>Sign in</h1>
         <p style={ui.p}>
-          GitHub sign-in lets you sync themes now — and later, secure personal
-          stuff (docs/editors).
+          Use GitHub to sync your Buk1t preferences across projects. Later this
+          will also power secure personal tools (docs/editors).
         </p>
 
         <a href={startUrl} style={ui.btn}>
@@ -49,7 +48,7 @@ export default function HomeClient() {
         </a>
 
         <p style={ui.small}>
-          Return destination:
+          You’ll be returned to:
           <br />
           <span style={ui.mono}>{returnTo}</span>
         </p>

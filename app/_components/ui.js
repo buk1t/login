@@ -5,81 +5,156 @@ export const ui = {
     placeItems: "center",
     padding: 24,
     background:
-      "radial-gradient(900px 500px at 20% 0%, rgba(80,150,255,0.18), transparent 55%)," +
-      "radial-gradient(900px 500px at 80% 20%, rgba(0,255,200,0.12), transparent 55%)," +
+      "radial-gradient(900px 520px at 18% 0%, rgba(80,150,255,0.20), transparent 56%)," +
+      "radial-gradient(900px 520px at 82% 16%, rgba(0,255,200,0.14), transparent 56%)," +
+      "radial-gradient(700px 520px at 50% 110%, rgba(255,255,255,0.06), transparent 60%)," +
       "#0b0b0d",
     color: "rgba(255,255,255,0.92)",
     fontFamily:
       "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial",
   },
+
   card: {
-    width: "min(660px, 100%)",
-    borderRadius: 18,
+    width: "min(720px, 100%)",
+    borderRadius: 22,
     padding: 22,
-    background: "rgba(18,18,22,0.72)",
+    background: "rgba(18,18,22,0.74)",
     border: "1px solid rgba(255,255,255,0.10)",
-    boxShadow: "0 14px 40px rgba(0,0,0,0.35)",
+    boxShadow: "0 18px 50px rgba(0,0,0,0.40)",
+    backdropFilter: "blur(10px)",
   },
-  bar: {
+
+  // layout bits
+  topbar: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     gap: 12,
     marginBottom: 16,
   },
+
   brand: {
     textDecoration: "none",
     color: "rgba(255,255,255,0.92)",
     fontWeight: 900,
     letterSpacing: 0.6,
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 10,
   },
-  right: { display: "flex", gap: 12, alignItems: "center" },
-  link: {
-    textDecoration: "none",
-    padding: "8px 10px",
-    borderRadius: 12,
-    border: "1px solid rgba(255,255,255,0.16)",
-    background: "rgba(255,255,255,0.08)",
-    color: "rgba(255,255,255,0.92)",
-    fontWeight: 650,
+
+  pill: {
+    fontSize: 12,
+    padding: "4px 9px",
+    borderRadius: 999,
+    border: "1px solid rgba(255,255,255,0.14)",
+    background: "rgba(255,255,255,0.06)",
+    opacity: 0.9,
   },
-  linkDanger: {
-    textDecoration: "none",
-    padding: "8px 10px",
-    borderRadius: 12,
-    border: "1px solid rgba(255,120,120,0.35)",
-    background: "rgba(255,80,80,0.10)",
-    color: "rgba(255,220,220,0.95)",
-    fontWeight: 800,
-  },
-  h1: { margin: "6px 0 8px", fontSize: 28, lineHeight: 1.1 },
-  p: { margin: "0 0 16px", opacity: 0.75, lineHeight: 1.45 },
+
+  right: { display: "flex", gap: 10, alignItems: "center" },
+
+  // type
+  h1: { margin: "6px 0 8px", fontSize: 30, lineHeight: 1.08, letterSpacing: -0.2 },
+  p: { margin: "0 0 14px", opacity: 0.74, lineHeight: 1.5, fontSize: 14 },
+
+  // buttons/inputs
   btn: {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",
+    width: "96%",
     padding: "12px 14px",
-    borderRadius: 14,
-    background: "rgba(255,255,255,0.10)",
+    borderRadius: 16,
+    background: "linear-gradient(180deg, rgba(255,255,255,0.13), rgba(255,255,255,0.08))",
     border: "1px solid rgba(255,255,255,0.16)",
     color: "rgba(255,255,255,0.92)",
     textDecoration: "none",
     fontWeight: 800,
     cursor: "pointer",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.30)",
   },
-  small: { marginTop: 14, opacity: 0.65, fontSize: 12, lineHeight: 1.35 },
+
+  btnGhost: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "10px 12px",
+    borderRadius: 14,
+    background: "rgba(255,255,255,0.06)",
+    border: "1px solid rgba(255,255,255,0.14)",
+    color: "rgba(255,255,255,0.90)",
+    textDecoration: "none",
+    fontWeight: 750,
+    cursor: "pointer",
+  },
+
+  btnDanger: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "10px 12px",
+    borderRadius: 14,
+    background: "rgba(255,80,80,0.10)",
+    border: "1px solid rgba(255,120,120,0.35)",
+    color: "rgba(255,220,220,0.96)",
+    textDecoration: "none",
+    fontWeight: 850,
+    cursor: "pointer",
+  },
+
+  input: {
+    padding: "10px 12px",
+    borderRadius: 16,
+    background: "rgba(255,255,255,0.07)",
+    border: "1px solid rgba(255,255,255,0.14)",
+    color: "rgba(255,255,255,0.92)",
+    outline: "none",
+  },
+
+  small: { marginTop: 14, opacity: 0.62, fontSize: 12, lineHeight: 1.35 },
+
   mono: {
     fontFamily:
       "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, monospace",
     opacity: 0.9,
   },
-  input: {
-    padding: "10px 12px",
-    borderRadius: 14,
-    background: "rgba(255,255,255,0.08)",
-    border: "1px solid rgba(255,255,255,0.16)",
-    color: "rgba(255,255,255,0.92)",
-    outline: "none",
+
+  divider: {
+    height: 1,
+    background: "rgba(255,255,255,0.10)",
+    margin: "16px 0",
   },
+
+  row: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 12,
+    flexWrap: "wrap",
+  },
+
+  // account block
+  acct: {
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
+    padding: 12,
+    borderRadius: 18,
+    background: "rgba(255,255,255,0.06)",
+    border: "1px solid rgba(255,255,255,0.10)",
+  },
+
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 14,
+    objectFit: "cover",
+    background: "rgba(255,255,255,0.08)",
+    border: "1px solid rgba(255,255,255,0.10)",
+  },
+
+  acctText: { display: "grid", gap: 2 },
+  acctName: { fontWeight: 900, letterSpacing: -0.1, lineHeight: 1.15 },
+  acctEmail: { fontSize: 12, opacity: 0.72, lineHeight: 1.2 },
 };

@@ -1,25 +1,15 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
 import Header from "../_components/Header";
 import { ui } from "../_components/ui";
 
 export default function Settings() {
-  const router = useRouter();
-
   const [me, setMe] = useState(null);
-  const [theme, setTheme] = useState({
-    mode: "dark",
-    accent: "ocean",
-    radius: 18,
-  });
+  const [theme, setTheme] = useState({ mode: "dark", accent: "ocean", radius: 18 });
   const [status, setStatus] = useState("");
 
-  // If you want settings to send people back to the main buk1t site after login,
-  // set this to your preferred default:
   const returnTo = "https://www.buk1t.com/";
-
   const startUrl = useMemo(() => {
     return (
       "https://api.buk1t.com/api/auth/github/start?return_to=" +
@@ -50,39 +40,49 @@ export default function Settings() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ theme }),
       });
-
-      if (r.ok) setStatus("Saved ✅");
-      else setStatus("Save failed ❌");
+      setStatus(r.ok ? "Saved ✅" : "Save failed ❌");
     } catch {
       setStatus("Save failed ❌");
     }
     setTimeout(() => setStatus(""), 1400);
   }
 
+  const user = me?.user;
+
   return (
     <main style={ui.main}>
       <div style={ui.card}>
-        <Header me={me} />
+        <Header me={me} active="settings" />
 
         <h1 style={ui.h1}>Settings</h1>
+        <p style={ui.p}>Theme + account. More controls later.</p>
 
         {!me?.ok ? (
           <>
-            <p style={ui.p}>You aren’t logged in.</p>
-
+            <div style={ui.divider} />
+            <p style={ui.p}>You aren’t signed in.</p>
             <a href={startUrl} style={ui.btn}>
               Sign in with GitHub
             </a>
-
-            <button
-              onClick={() => router.push("/")}
-              style={{ ...ui.btn, marginTop: 10 }}
-            >
-              Back
-            </button>
           </>
         ) : (
           <>
+            {/* Account */}
+            <div style={ui.acct}>
+              {user?.avatar_url ? (
+                <img src={user.avatar_url} alt="" style={ui.avatar} />
+              ) : (
+                <div style={ui.avatar} />
+              )}
+              <div style={ui.acctText}>
+                <div style={ui.acctName}>{user?.name || "Account"}</div>
+                <div style={ui.acctEmail}>{user?.email || "No public email"}</div>
+              </div>
+            </div>
+
+            <div style={ui.divider} />
+
+            {/* Theme controls */}
             <div
               style={{
                 display: "grid",
@@ -90,20 +90,11 @@ export default function Settings() {
                 gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
               }}
             >
-              <label
-                style={{
-                  display: "grid",
-                  gap: 6,
-                  fontWeight: 700,
-                  opacity: 0.9,
-                }}
-              >
+              <label style={{ display: "grid", gap: 6, fontWeight: 800, opacity: 0.9 }}>
                 Mode
                 <select
                   value={theme.mode || "dark"}
-                  onChange={(e) =>
-                    setTheme({ ...theme, mode: e.target.value })
-                  }
+                  onChange={(e) => setTheme({ ...theme, mode: e.target.value })}
                   style={ui.input}
                 >
                   <option value="dark">dark</option>
@@ -111,60 +102,42 @@ export default function Settings() {
                 </select>
               </label>
 
-              <label
-                style={{
-                  display: "grid",
-                  gap: 6,
-                  fontWeight: 700,
-                  opacity: 0.9,
-                }}
-              >
+              <label style={{ display: "grid", gap: 6, fontWeight: 800, opacity: 0.9 }}>
                 Accent
                 <input
                   value={theme.accent || ""}
-                  onChange={(e) =>
-                    setTheme({ ...theme, accent: e.target.value })
-                  }
+                  onChange={(e) => setTheme({ ...theme, accent: e.target.value })}
                   style={ui.input}
                   placeholder="ocean / neon / beach / etc"
                 />
               </label>
 
-              <label
-                style={{
-                  display: "grid",
-                  gap: 6,
-                  fontWeight: 700,
-                  opacity: 0.9,
-                }}
-              >
+              <label style={{ display: "grid", gap: 6, fontWeight: 800, opacity: 0.9 }}>
                 Radius
                 <input
                   type="number"
                   value={Number(theme.radius ?? 18)}
-                  onChange={(e) =>
-                    setTheme({ ...theme, radius: Number(e.target.value) })
-                  }
+                  onChange={(e) => setTheme({ ...theme, radius: Number(e.target.value) })}
                   style={ui.input}
                 />
               </label>
             </div>
 
-            <button onClick={save} style={{ ...ui.btn, marginTop: 14 }}>
-              Save
-            </button>
+            <div style={{ marginTop: 14 }}>
+              <button onClick={save} style={ui.btn}>
+                Save
+              </button>
+              {!!status && <div style={{ marginTop: 10, opacity: 0.82 }}>{status}</div>}
+            </div>
 
-            {!!status && (
-              <div style={{ marginTop: 10, opacity: 0.85 }}>{status}</div>
-            )}
-
-            <details style={{ marginTop: 14, opacity: 0.85 }}>
-              <summary>Theme JSON</summary>
+            {/* JSON (keep, but tucked away) */}
+            <details style={{ marginTop: 14, opacity: 0.88 }}>
+              <summary style={{ cursor: "pointer" }}>Theme JSON</summary>
               <pre
                 style={{
                   marginTop: 10,
                   padding: 12,
-                  borderRadius: 14,
+                  borderRadius: 16,
                   background: "rgba(0,0,0,0.35)",
                   border: "1px solid rgba(255,255,255,0.10)",
                   overflow: "auto",
